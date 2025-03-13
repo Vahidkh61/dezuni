@@ -1,3 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Sheets Form</title>
+</head>
+<body>
+    <h2>Submit Your Data</h2>
+    <form id="dataForm">
+        Name: <input type="text" id="name" required><br><br>
+        Email: <input type="email" id="email" required><br><br>
+        Message: <textarea id="message" required></textarea><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    <p id="response"></p>
+
+  
+
+
 <script>
     document.getElementById("dataForm").addEventListener("submit", function(event) {
         event.preventDefault();
@@ -19,3 +37,5 @@
         .catch(error => console.error("Error:", error));
     });
 </script>
+</body>
+</html>
