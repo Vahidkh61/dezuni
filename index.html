@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خدمات دانشجویی</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            margin: 20px;
+        }
+        form {
+            max-width: 500px;
+            margin: auto;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<form id="main-form">
+    <h2>لطفاً خدمات مورد نیاز خود را انتخاب کنید:</h2>
+    <label>
+        <input type="checkbox" name="services" value="consultation"> پیگیری امور فارغ التحصیلی
+    </label><br>
+    <label>
+        <input type="checkbox" name="services" value="academic-support"> امضای پایان‌نامه
+    </label><br>
+    <label>
+        <input type="checkbox" name="services" value="course-registration"> پیگیری امور خوابگاه
+    </label><br>
+
+    <h2>لطفاً اطلاعات شخصی خود را وارد کنید:</h2>
+    <label>
+        نام:
+        <input type="text" name="firstName" required>
+    </label><br>
+    <label>
+        نام خانوادگی:
+        <input type="text" name="lastName" required>
+    </label><br>
+    <label>
+        شماره تلفن:
+        <input type="tel" name="phone" pattern="[0-9]{11}" required>
+    </label><br>
+    <label>
+        توضیحات تکمیلی:
+        <textarea name="additionalInfo"></textarea>
+    </label><br>
+    <span id="form-error" class="error"></span><br>
+    <button type="button" onclick="submitFormData()">ثبت اطلاعات</button>
+</form>
+
+<script>
+function submitFormData() {
+    // خواندن اطلاعات فرم
+    const selectedServices = Array.from(
+        document.querySelectorAll('input[name="services"]:checked')
+    ).map(el => el.value);
+
+    const firstName = document.querySelector('input[name="firstName"]').value.trim();
+    const lastName = document.querySelector('input[name="lastName"]').value.trim();
+    const phone = document.querySelector('input[name="phone"]').value.trim();
+    const additionalInfo = document.querySelector('textarea[name="additionalInfo"]').value.trim();
+
+    // اعتبارسنجی: حداقل یک سرویس باید انتخاب شود
+    if (selectedServices.length === 0) {
+        document.getElementById('form-error').textContent = "لطفاً حداقل یک سرویس را انتخاب کنید.";
+        return;
+    }
+
+    // اعتبارسنجی: تمام فیلدها الزامی هستند
+    if (!firstName || !lastName || !phone) {
+        document.getElementById('form-error').textContent = "لطفاً تمام فیلدها را پر کنید.";
+        return;
+    }
+
+    // اعتبارسنجی شماره تلفن
+    const phonePattern = /^[0-9]{11}$/;
+    if (!phonePattern.test(phone)) {
+        document.getElementById('form-error').textContent = "شماره تلفن معتبر نیست (مثال: 09123456789).";
+        return;
+    }
+
+    // پاک کردن پیغام خطای قبلی
+    document.getElementById('form-error').textContent = "";
+
+    // آماده‌سازی داده‌ها برای ارسال
+    const data = {
+        services: selectedServices,
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        additionalInfo: additionalInfo
+    };
+
+    // ارسال داده‌ها به Google Sheets
+    fetch('https://script.google.com/macros/s/AKfycbxkJ3nvWm-hxwQD_M0NjtlcV5GMRgzhrRxz8_zHgg_Mix1kuZo27Wx9EgoKYTDQ0Edl7A/exec', { // URL وب‌اپ رو جایگزین کنید
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.text())
+    .then(message => {
+        alert(message);
+        document.getElementById('main-form').reset();
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+
+</body>
+</html>
