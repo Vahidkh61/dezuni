@@ -1,3 +1,4 @@
+<!--
 <form 
   method="POST" 
   action="https://script.google.com/macros/s/AKfycbyCNmdEUISNX0q6OUFneNdnqktG4lxZ-oFJSG-UBasvjOD6uJYFn_HL5PERYH7ylstIqA/exec"
@@ -6,3 +7,138 @@
   <input name="name" type="text" placeholder="Name" required>
   <button type="submit">Send</button>
 </form>
+-->
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>فرم درخواست خدمات</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .form-container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .error {
+      color: red;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>فرم درخواست خدمات</h2>
+    <form 
+      method="POST" 
+      action="https://script.google.com/macros/s/AKfycbyCNmdEUISNX0q6OUFneNdnqktG4lxZ-oFJSG-UBasvjOD6uJYFn_HL5PERYH7ylstIqA/exec"
+      onsubmit="return validateForm()"
+    >
+      <!-- نام و نام خانوادگی -->
+      <div class="form-group">
+        <label for="fullName">نام و نام خانوادگی</label>
+        <input type="text" id="fullName" name="fullName" placeholder="نام و نام خانوادگی خود را وارد کنید" required>
+      </div>
+
+      <!-- شماره موبایل -->
+      <div class="form-group">
+        <label for="phone">شماره موبایل</label>
+        <input type="tel" id="phone" name="phone" placeholder="مثال: 09123456789" required>
+        <div id="phoneError" class="error"></div>
+      </div>
+
+      <!-- نوع خدمت -->
+      <div class="form-group">
+        <label for="serviceType">نوع خدمت</label>
+        <select id="serviceType" name="serviceType" required>
+          <option value="" disabled selected>انتخاب کنید</option>
+          <option value="خدمات فارغ التحصیلی">خدمات فارغ التحصیلی</option>
+          <option value="امور مالی">امور مالی</option>
+          <option value="امور پایان نامه">امور پایان نامه</option>
+        </select>
+      </div>
+
+      <!-- دکمه ارسال -->
+      <button type="submit">ارسال درخواست</button>
+    </form>
+  </div>
+
+  <script>
+    function validateForm() {
+      const phoneInput = document.getElementById('phone');
+      const phoneError = document.getElementById('phoneError');
+      const phoneValue = phoneInput.value.trim();
+
+      // Reset error message
+      phoneError.textContent = '';
+
+      // Check if phone number is exactly 11 digits and starts with '09'
+      if (!/^\d{11}$/.test(phoneValue) || !phoneValue.startsWith('09')) {
+        phoneError.textContent = 'شماره موبایل باید ۱۱ رقمی باشد و با ۰۹ شروع شود.';
+        return false; // Prevent form submission
+      }
+
+      return true; // Allow form submission
+    }
+  </script>
+</body>
+</html>
